@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qa.puppies.domain.Puppy;
+import com.qa.puppies.rest.PuppyController;
+import com.qa.puppies.service.PuppyService;
+import com.qa.puppies.service.PuppyServiceDB;
 
 @SpringBootApplication
 public class SpringPuppiesApplication {
@@ -23,6 +26,11 @@ public class SpringPuppiesApplication {
 		Puppy backToPuppy = mapper.readValue(demoPuppyAsJSON, Puppy.class);
 
 		System.out.println(backToPuppy);
+
+		// SUPER DEMO PURPOSES
+		PuppyService service = new PuppyServiceDB();
+
+		PuppyController controller = new PuppyController(service);
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.qa.puppies.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -14,12 +13,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.qa.puppies.domain.Puppy;
+import com.qa.puppies.service.PuppyService;
 
 @RestController // enables request handling
 public class PuppyController {
 
-	// PURELY FOR DEMO PURPOSES
-	private List<Puppy> puppies = new ArrayList<>(); // explain this tomorrow
+	private PuppyService service;
+
+	public PuppyController(PuppyService service) {
+		super();
+		this.service = service;
+	}
 
 	@GetMapping("/hello") // listen for a request at /hello
 	public String hello() {
@@ -28,32 +32,35 @@ public class PuppyController {
 
 	@PostMapping("/create") // triggered by a POST request to /create
 	public ResponseEntity<Puppy> createPuppy(@RequestBody Puppy newPuppy) { // a puppy object in the request + response
-																			// body
-		this.puppies.add(newPuppy);
-		Puppy responseBody = this.puppies.get(this.puppies.size() - 1);
+		Puppy responseBody = this.service.createPuppy(newPuppy);
 		return new ResponseEntity<Puppy>(responseBody, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/getAll")
 	public ResponseEntity<List<Puppy>> getPuppies() {
-		return ResponseEntity.ok(this.puppies); // unnecessary due to default being 200 anyway
+		return ResponseEntity.ok(this.service.getPuppies()); // unnecessary due to default being 200 anyway
 	}
 
 	@GetMapping("/get/{id}") // getpuppy with id of {id}
 	public Puppy getPuppy(@PathVariable Integer id) {
-		return this.puppies.get(id);
+		return this.service.getPuppy(id);
 	}
 
 	@PutMapping("/replace/{id}")
 	public ResponseEntity<Puppy> replacePuppy(@PathVariable Integer id, @RequestBody Puppy newPuppy) {
-
 		System.out.println("Replacing puppy with id " + id + " with " + newPuppy);
-		return null;
+		Puppy body = this.service.replacePuppy(id, newPuppy);
+		return new ResponseEntity<Puppy>(body, HttpStatus.ACCEPTED);
 	}
 
 	@DeleteMapping("/remove/{id}")
 	public ResponseEntity<?> removePuppy(@PathVariable Integer id) {
 		System.out.println("Removing puppy with id " + id);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		boolean removed = this.service.removePuppy(id);
+		if (removed) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }
