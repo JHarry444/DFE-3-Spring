@@ -1,6 +1,16 @@
 package com.qa.puppies.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Puppy {
+
+	@Id // tells Spring this is the PK
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT
+	private Integer id;
 
 	private String name;
 
@@ -15,8 +25,17 @@ public class Puppy {
 		this.setHeight(height);
 	}
 
+	// REQUIRED
 	public Puppy() {
 		super();
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -47,6 +66,7 @@ public class Puppy {
 		}
 	}
 
+	// Not required
 	@Override
 	public String toString() {
 		return "Puppy [name=" + name + ", breed=" + breed + ", height=" + height + "]";
