@@ -18,6 +18,14 @@ public class Puppy {
 
 	private int height;
 
+	public Puppy(Integer id, String name, String breed, int height) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.breed = breed;
+		this.height = height;
+	}
+
 	public Puppy(String name, String breed, int height) {
 		super();
 		this.name = name;
