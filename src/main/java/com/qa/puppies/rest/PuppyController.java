@@ -18,7 +18,7 @@ import com.qa.puppies.domain.Puppy;
 import com.qa.puppies.service.PuppyService;
 
 @RestController // enables request handling
-@RequestMapping("/puppy")
+@RequestMapping(value = "/puppy") // prepends /puppy to all of the endpoints
 public class PuppyController {
 
 	private PuppyService service;

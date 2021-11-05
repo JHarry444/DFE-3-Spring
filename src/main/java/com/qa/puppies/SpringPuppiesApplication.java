@@ -15,6 +15,7 @@ public class SpringPuppiesApplication {
 		PuppyService service = ac.getBean(PuppyService.class);
 
 		System.out.println(service);
+
 	}
 
 }
