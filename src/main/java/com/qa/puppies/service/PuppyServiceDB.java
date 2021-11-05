@@ -3,11 +3,10 @@ package com.qa.puppies.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.stereotype.Service;
 
 import com.qa.puppies.domain.Puppy;
+import com.qa.puppies.exceptions.PuppyNotFoundException;
 import com.qa.puppies.repos.PuppyRepo;
 
 @Service
@@ -39,7 +38,7 @@ public class PuppyServiceDB implements PuppyService {
 			Puppy puppy = puppyOptional.get();
 			return puppy;
 		} else {
-			throw new EntityNotFoundException("No puppy found with id: " + id);
+			throw new PuppyNotFoundException();
 		}
 	}
 

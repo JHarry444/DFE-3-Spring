@@ -59,6 +59,11 @@ public class PuppyIntegrationTest {
 	}
 
 	@Test
+	void testPuppyNotFound() throws Exception {
+		this.mvc.perform(get("/puppy/get/9999999")).andExpect(status().isNotFound());
+	}
+
+	@Test
 	void testGetAll() throws Exception {
 
 		RequestBuilder request = get("/puppy/getAll");
