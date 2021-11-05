@@ -1,7 +1,9 @@
 package com.qa.puppies.rest;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -69,6 +71,29 @@ public class PuppyIntegrationTest {
 		ResultMatcher checkBody = content().json(responseBody);
 
 		this.mvc.perform(request).andExpect(checkStatus).andExpect(checkBody);
+	}
+
+	@Test
+	void testGet() throws Exception {
+		final String responseBody = this.mapper.writeValueAsString(new Puppy(1, "Woofy", "Daschund", 10));
+		this.mvc.perform(get("/puppy/get/1")).andExpect(status().isOk()).andExpect(content().json(responseBody));
+	}
+
+	@Test
+	void testReplace() throws Exception {
+		final String responseBody = this.mapper.writeValueAsString(new Puppy(1, "Rex", "Doberman", 30));
+
+		RequestBuilder request = put("/puppy/replace/1").contentType(MediaType.APPLICATION_JSON).content(responseBody);
+
+		ResultMatcher checkStatus = status().isAccepted();
+		ResultMatcher checkBody = content().json(responseBody);
+
+		this.mvc.perform(request).andExpect(checkStatus).andExpect(checkBody);
+	}
+
+	@Test
+	void testDelete() throws Exception {
+		this.mvc.perform(delete("/puppy/remove/1")).andExpect(status().isNoContent());
 	}
 
 }
